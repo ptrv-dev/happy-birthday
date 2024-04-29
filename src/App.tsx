@@ -1,15 +1,21 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Confetti from 'react-confetti';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import useSound from 'use-sound';
+import audio from '../public/audio.mp3';
 
-import './App.css';
 import { TypeAnimation } from 'react-type-animation';
+import './App.css';
 
 export const App = () => {
   const [show, setShow] = useState(false);
   const [run, setRun] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [play] = useSound(audio);
 
-  const start = () => setShow(true);
+  const start = async () => {
+    setShow(true);
+  };
 
   return (
     <div className="wrapper">
@@ -42,9 +48,9 @@ export const App = () => {
               300,
               'С днём рождения\nСерьожа',
               1000,
-              () => {
+              async () => {
                 setRun(true);
-                audioRef.current?.play();
+                play();
               },
               'С днём рождения\nСерьожа\n🎉🎉🎉',
             ]}
@@ -52,7 +58,6 @@ export const App = () => {
           />
         </div>
       )}
-      <audio src="/audio.mp3" ref={audioRef} className="hidden" />
       <Confetti className="background" run={run} />
     </div>
   );
